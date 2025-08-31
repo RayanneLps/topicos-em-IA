@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 client = OpenAI(
-    api_key = "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" ,
+    api_key = "api-key" ,
 )
 load_dotenv()
 
@@ -26,7 +26,7 @@ responda não encontrei a informação requirida """
 pergunta = input("Qual a sua pergunta? ")
 
 #carregar db
-funcao_embeddings = OpenAIEmbeddings(api_key="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")
+funcao_embeddings = OpenAIEmbeddings(api_key="api-key")
 
 db = Chroma(persist_directory=caminho_db, embedding_function=funcao_embeddings)
 #comparar pergunta com db
