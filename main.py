@@ -34,14 +34,15 @@ def carregar_db():
             google_api_key=os.getenv('GOOGLE_API_KEY')
         )
         
-        db = Chroma(persist_directory=caminho_db, embedding_function=funcao_embeddings)
+        # Alteração: Adicionado o nome da coleção para corresponder ao create_db.py
+        db = Chroma(persist_directory=caminho_db, embedding_function=funcao_embeddings, collection_name="db1")
         print("✅ Banco de dados carregado com sucesso!")
         return db
     except Exception as e:
         print(f"❌ Erro ao carregar banco de dados: {e}")
         return None
 
-def buscar_documentos_relevantes(db, pergunta, k=3):
+def buscar_documentos_relevantes(db, pergunta, k=2):
     """Busca documentos relevantes no banco vetorial"""
     try:
         resultados = db.similarity_search_with_relevance_scores(pergunta, k=k)
@@ -64,10 +65,10 @@ def buscar_documentos_relevantes(db, pergunta, k=3):
         return ""
 
 def gerar_resposta_gemini(pergunta, contexto):
-    """Gera resposta usando Gemini Pro com o contexto dos documentos"""
+    """Gera resposta usando Gemini com o contexto dos documentos"""
     try:
-        # Configurar o modelo
-        model = genai.GenerativeModel('gemini-pro')
+        # Alteração: Usando 'gemini-1.5-pro' para aproveitar sua conta paga.
+        model = genai.GenerativeModel('gemini-1.5-pro')
         
         # Criar o prompt completo
         prompt_completo = prompt_template.format(
@@ -126,7 +127,7 @@ def main():
             print("❌ Não encontrei informações relevantes nos documentos.")
             continue
         
-        print("🤔 Gerando resposta com Gemini Pro...")
+        print("🤔 Gerando resposta com Gemini...")
         
         # Gerar resposta
         resposta = gerar_resposta_gemini(pergunta, contexto)

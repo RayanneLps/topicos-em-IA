@@ -42,7 +42,7 @@ def load_documents():
         return []
     
     try:
-        loader_docs = PyPDFDirectoryLoader(BASE_FOLDER, glob="*.pdf")
+        loader_docs = PyPDFDirectoryLoader(BASE_FOLDER, glob="**/*.pdf")
         documents = loader_docs.load()
         print(f"✅ {len(documents)} documentos carregados")
         
@@ -66,7 +66,7 @@ def split_documents(documents):
     
     try:
         separator_doc = RecursiveCharacterTextSplitter(
-            chunk_size=1000,        # 1 chunk = 1000 characters
+            chunk_size=3000,        # 1 chunk = 1000 characters
             chunk_overlap=500,      # chunks se sobrepõem em 500 caracteres
             length_function=len,
             add_start_index=True
@@ -89,7 +89,7 @@ def vectorize_chunks(chunks):
     
     try:
         # Verificar se a API key do Google está configurada
-        api_key = os.getenv('GOOGLE_API_KEY')
+        api_key = os.getenv("GOOGLE_API_KEY")
         if not api_key:
             print("❌ GOOGLE_API_KEY não encontrada no arquivo .env!")
             print("Adicione sua chave do Google AI Studio no arquivo .env:")
