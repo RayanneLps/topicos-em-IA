@@ -66,8 +66,8 @@ def split_documents(documents):
     
     try:
         separator_doc = RecursiveCharacterTextSplitter(
-            chunk_size=3000,        # 1 chunk = 1000 characters
-            chunk_overlap=500,      # chunks se sobrepõem em 500 caracteres
+            chunk_size=1500,        # 1 chunk = 1000 characters
+            chunk_overlap=150,      # chunks se sobrepõem em 500 caracteres
             length_function=len,
             add_start_index=True
         )
