@@ -31,8 +31,8 @@ def criar_db():
     
     # Dividir em chunks
     splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=150,
+        chunk_size=3000,
+        chunk_overlap=600,
         length_function=len,
         add_start_index=True
     )

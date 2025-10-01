@@ -40,7 +40,7 @@ def carregar_db():
 def responder(pergunta, db):
     """Busca documentos e gera resposta usando RAG + LLM local"""
     # Busca documentos relevantes
-    docs = db.similarity_search(pergunta, k=5)
+    docs = db.similarity_search(pergunta, k=10)
     if not docs:
         return "❌ Nenhum documento relevante encontrado."
 
