@@ -37,12 +37,17 @@ def carregar_db():
     print("✅ Banco de dados carregado com sucesso!")
     return db
 
-def responder(pergunta, db):
+def responder(pergunta, db, k=15):
     """Busca documentos e gera resposta usando RAG + LLM local"""
     # Busca documentos relevantes
-    docs = db.similarity_search(pergunta, k=15)
+    docs = db.similarity_search(pergunta, k=k)
     if not docs:
         return "❌ Nenhum documento relevante encontrado."
+
+    print("\n📄 === Chunks recuperados ===")
+    for i, d in enumerate(docs, 1):
+        preview = d.page_content[:300].replace("\n", " ")
+        print(f"[{i}] {preview}...\n")
 
     contexto = "\n\n".join([d.page_content for d in docs])
     prompt = PROMPT_TEMPLATE.format(contexto=contexto, pergunta=pergunta)
@@ -70,7 +75,7 @@ def main():
             continue
 
         print("🔍 Buscando documentos relevantes e gerando resposta...")
-        resposta = responder(pergunta, db)
+        resposta = responder(pergunta, db, k=15)
         print(f"\n🤖 Resposta:\n{resposta}\n{'-'*50}")
 
 if __name__ == "__main__":
