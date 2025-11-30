@@ -1,6 +1,7 @@
-import gradio as gr
-import os
+import re
 import time
+import os
+from datetime import datetime
 from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings, OllamaLLM
 
@@ -45,8 +46,8 @@ Resposta:
 
 def carregar_db():
     if not os.path.exists(CAMINHO_DB):
-        print(f"❌ Banco de dados '{CAMINHO_DB}' não encontrado!")
-        print("💡 Execute primeiro 'create_db.py' para criar o banco.")
+        print(f"ERRO: Banco de dados '{CAMINHO_DB}' nao encontrado!")
+        print("Execute primeiro 'create_db.py' para criar o banco.")
         return None
     
     db = Chroma(
@@ -54,7 +55,7 @@ def carregar_db():
         embedding_function=embeddings,
         collection_name="db1"
     )
-    print("✅ Banco de dados carregado com sucesso!")
+    print("OK: Banco de dados carregado com sucesso!")
     return db
 
 def responder(pergunta, db):
@@ -63,7 +64,7 @@ def responder(pergunta, db):
     docs_semanticos = db.similarity_search(pergunta, k=7)
     
     if not docs_semanticos:
-        return "❌ Nenhum documento relevante encontrado."
+        return "Nenhum documento relevante encontrado."
     
     # Busca também por palavras-chave importantes (busca híbrida)
     palavras_chave = [palavra.lower() for palavra in pergunta.split() if len(palavra) > 3]
@@ -110,97 +111,100 @@ def responder(pergunta, db):
     resposta = llm.invoke(prompt)
     return resposta
 
-print("🔄 Inicializando sistema...")
-db_global = carregar_db()
+def extrair_perguntas(arquivo):
+    """Extrai as perguntas do arquivo de teste"""
+    perguntas = []
+    with open(arquivo, 'r', encoding='utf-8') as f:
+        conteudo = f.read()
+    
+    # Padrão para encontrar perguntas numeradas
+    # Exemplo: "1. O que é o PIBIC e qual o seu objetivo? [Nível: Fácil]"
+    padrao = r'(\d+)\.\s+(.+?)\s+\[Nível:'
+    matches = re.findall(padrao, conteudo)
+    
+    for num, pergunta in matches:
+        perguntas.append((int(num), pergunta.strip()))
+    
+    return perguntas
 
-def responder_pergunta(pergunta, historico):
-    if db_global is None:
-        resposta = "❌ Banco de dados não inicializado. Execute 'create_db.py' primeiro."
-        historico.append((pergunta, resposta))
-        return historico, historico
+def analisar_resposta(resposta):
+    """Analisa se a resposta foi encontrada ou não"""
+    resposta_lower = resposta.lower()
     
-    if not pergunta.strip():
-        resposta = "⚠️ Por favor, digite uma pergunta!"
-        historico.append((pergunta, resposta))
-        return historico, historico
-    
-    try:
-        print(f"🔍 Processando pergunta: {pergunta}")
-        inicio = time.time()
-        resposta = responder(pergunta, db_global)
-        tempo_decorrido = time.time() - inicio
-        print(f"⏱️  Tempo de resposta: {tempo_decorrido:.2f} segundos")
-        
-        # Adiciona o tempo de resposta embaixo da resposta
-        resposta_com_tempo = f"{resposta}\n\n---\n⏱️ **Tempo de resposta:** {tempo_decorrido:.2f} segundos"
-        historico.append((pergunta, resposta_com_tempo))
-        return historico, historico
-        
-    except Exception as e:
-        resposta = f"❌ Erro ao gerar resposta: {str(e)}"
-        historico.append((pergunta, resposta))
-        return historico, historico
+    if "não encontrada" in resposta_lower or "não encontrado" in resposta_lower:
+        return "não encontrou a resposta"
+    elif "informação não encontrada" in resposta_lower:
+        return "não encontrou a resposta"
+    elif len(resposta.strip()) < 50:  # Resposta muito curta pode indicar problema
+        return "resposta muito curta"
+    else:
+        return "respondeu corretamente"
 
-with gr.Blocks(theme=gr.themes.Soft(), title="RAG Chatbot") as demo:
+def gerar_relatorio(perguntas, resultados, nome_arquivo="relatorio_de_teste.txt"):
+    """Gera o relatório no formato especificado"""
+    data_atual = datetime.now().strftime("%d\\%m\\%Y")
     
-    gr.Markdown("# 🤖 Chatbot RAG com Ollama")
-    gr.Markdown("Faça perguntas sobre os documentos da base de conhecimento")
+    with open(nome_arquivo, 'w', encoding='utf-8') as f:
+        f.write(f"teste 1 : ({data_atual}):\n")
+        f.write("    chunk_size=800,\n")
+        f.write("    chunk_overlap=200,\n")
+        f.write("    length_function=len,\n")
+        f.write("    add_start_index=True, #versao funcional 1\n")
+        f.write("    separators=[\"\\n\\n\", \"\\n\", \". \", \" \", \"\"]\n")
+        f.write("\n")
+        
+        for num, tempo, status in resultados:
+            tempo_int = int(tempo)
+            f.write(f"    pergunta {num}:{tempo_int}s e {status}\n")
+        
+        f.write("\n")
+        f.write("modelos:\n")
+        # Adiciona informações dos modelos (você pode ajustar isso)
+        f.write("llama3:latest\n")
+        f.write("nomic-embed-text:latest\n")
+
+def main():
+    print("Inicializando sistema...")
+    db = carregar_db()
     
-    chatbot = gr.Chatbot(
-        label="Conversa",
-        height=500,
-        placeholder="Faça sua primeira pergunta sobre os documentos..."
-    )
+    if db is None:
+        print("ERRO: Nao foi possivel carregar o banco de dados!")
+        return
     
-    with gr.Row():
-        pergunta_input = gr.Textbox(
-            label="",
-            placeholder="Digite sua pergunta aqui...",
-            scale=5,
-            show_label=False
-        )
-        btn_pesquisar = gr.Button("🔍 Pesquisar", variant="primary", scale=1, size="lg")
+    print("\nLendo perguntas do arquivo...")
+    perguntas = extrair_perguntas("perguntas_teste_rag.txt")
     
-    with gr.Row():
-        btn_limpar = gr.Button("🗑️ Limpar Histórico", variant="secondary", size="sm")
+    if not perguntas:
+        print("ERRO: Nenhuma pergunta encontrada no arquivo!")
+        return
     
-    gr.Markdown("---")
-    gr.Markdown("""
-    **💡 Informações:**
-    - Modelo: Llama3 (via Ollama)
-    """)
+    print(f"OK: {len(perguntas)} perguntas encontradas\n")
     
-    # Eventos
-    btn_pesquisar.click(
-        fn=responder_pergunta,
-        inputs=[pergunta_input, chatbot],
-        outputs=[chatbot, chatbot]
-    ).then(
-        lambda: "",
-        outputs=pergunta_input
-    )
+    resultados = []
     
-    pergunta_input.submit(
-        fn=responder_pergunta,
-        inputs=[pergunta_input, chatbot],
-        outputs=[chatbot, chatbot]
-    ).then(
-        lambda: "",
-        outputs=pergunta_input
-    )
+    for num, pergunta in perguntas:
+        print(f"Processando pergunta {num}: {pergunta[:50]}...")
+        
+        try:
+            inicio = time.time()
+            resposta = responder(pergunta, db)
+            tempo_decorrido = time.time() - inicio
+            
+            status = analisar_resposta(resposta)
+            
+            resultados.append((num, tempo_decorrido, status))
+            
+            print(f"   Tempo: {tempo_decorrido:.2f}s - Status: {status}")
+            print(f"   Resposta: {resposta[:100]}...\n")
+            
+        except Exception as e:
+            print(f"   ERRO: {str(e)}\n")
+            resultados.append((num, 0, f"erro: {str(e)[:30]}"))
     
-    btn_limpar.click(
-        lambda: [],
-        outputs=chatbot
-    )
+    print("\nGerando relatorio...")
+    gerar_relatorio(perguntas, resultados)
+    print("OK: Relatorio gerado com sucesso em 'relatorio_de_teste.txt'!")
 
 if __name__ == "__main__":
-    if db_global is None:
-        print("\n⚠️  ATENÇÃO: Banco de dados não foi carregado!")
-        print("Execute 'python create_db.py' primeiro para criar o banco.\n")
-    
-    demo.launch(
-        share=False,
-        server_name="127.0.0.1",
-        server_port=7860
-    )
+    main()
+

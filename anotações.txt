@@ -1,0 +1,23 @@
+teste 1:
+chunk_size=800,
+chunk_overlap=200,
+
+tempo medio de resposta: 200s, 2 perguntas corretas, 1 errada e 17 nao encontradas.
+
+teste 2: 
+chunk_size=1200,
+chunk_overlap=300,
+
+tempo medio de resposta: 150s, 1 pergunta correta, 1 errada e 18 nao encontradas.
+pré processamento: limpando os pdfs.
+
+teste3:
+1. Ajuste de parâmetros de busca
+Aumentado de k=3 para k=7 documentos
+Removido filtro de score restritivo
+Contexto aumentado: 3000 → 5000 caracteres
+Documentos maiores: 1500 → 2000 caracteres cada
+2. Busca híbrida
+Combina busca semântica (embeddings) + palavras-chave
+Prioriza documentos que contêm termos da pergunta
+Remove duplicatas automaticamente

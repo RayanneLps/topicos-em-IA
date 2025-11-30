@@ -1,0 +1,94 @@
+LISTA DE PERGUNTAS PARA TESTE DO RAG
+=====================================
+
+PERGUNTAS FACTUAIS E GERAIS
+----------------------------
+1. O que é o PIBIC? [Nível: Fácil]
+   Resposta: 
+   _______________________________________________________________________
+
+2. O que é o PIBITI? [Nível: Média]
+   Resposta: 
+   _______________________________________________________________________
+
+3. O que significa PIBITI e para quem é destinado? [Nível: Fácil]
+   Resposta: 
+   _______________________________________________________________________
+
+4. O que é o programa ICV e qual sua finalidade? [Nível: Fácil]
+   Resposta: 
+   _______________________________________________________________________
+
+5. Quais são os requisitos para participar do PIBIC? [Nível: Média]
+   Resposta: 
+   _______________________________________________________________________
+
+PERGUNTAS SOBRE PRAZOS E DATAS
+-------------------------------
+6. Qual o prazo de inscrição para o edital PIBIC 2025-2026? [Nível: Média]
+   Resposta: 
+   _______________________________________________________________________
+
+7. Quando foi publicado o Aditivo 1 do edital PIBIC 2025-2026? [Nível: Média]
+   Resposta: 
+   _______________________________________________________________________
+
+8. Qual a vigência dos programas de iniciação científica? [Nível: Média]
+   Resposta: 
+   _______________________________________________________________________
+
+9. Existe algum prazo para submissão de documentos? [Nível: Média]
+   Resposta: 
+   _______________________________________________________________________
+
+PERGUNTAS SOBRE VALORES E BENEFÍCIOS
+-------------------------------------
+10. Qual o valor da bolsa do PIBIC? [Nível: Fácil]
+    Resposta: 
+    _______________________________________________________________________
+
+11. Qual o valor da bolsa do PIBITI? [Nível: Fácil]
+    Resposta: 
+    _______________________________________________________________________
+
+12. Qual o valor da bolsa do ICV? [Nível: Fácil]
+    Resposta: 
+    _______________________________________________________________________
+
+13. Existe diferença no valor da bolsa entre PIBIC e PIBIC-Af? [Nível: Média]
+    Resposta: 
+    _______________________________________________________________________
+
+PERGUNTAS SOBRE DOCUMENTOS E REQUISITOS
+----------------------------------------
+14. Quais documentos são necessários para inscrição no PIBIC? [Nível: Média]
+    Resposta: 
+    _______________________________________________________________________
+
+15. Quais são os requisitos para ser orientador no programa ICV? [Nível: Média]
+    Resposta: 
+    _______________________________________________________________________
+
+16. É necessário ter histórico escolar para participar? [Nível: Fácil]
+    Resposta: 
+    _______________________________________________________________________
+
+PERGUNTAS COMPARATIVAS
+-----------------------
+17. Qual a diferença entre os programas PIBIC, PIBITI e ICV? [Nível: Difícil]
+    Resposta: 
+    _______________________________________________________________________
+
+18. Qual programa oferece maior valor de bolsa? [Nível: Média]
+    Resposta: 
+    _______________________________________________________________________
+
+PERGUNTAS SOBRE ADITIVOS
+-------------------------
+19. O que foi alterado no Aditivo 1 do edital PIBIC 2025-2026? [Nível: Difícil]
+    Resposta: 
+    _______________________________________________________________________
+
+20. Quais alterações foram feitas no Aditivo 2 do edital ICV 2025-2026? [Nível: Difícil]
+    Resposta: 
+    _______________________________________________________________________
