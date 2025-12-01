@@ -1,0 +1,12 @@
+info do pc:
+
+
+teste 1:
+10 respondidas corretamente
+9 nao encontrou resposta
+1 resposta muito curta
+
+
+teste 2:
+8 respondidas corretamente
+12 não encontrou a resposta

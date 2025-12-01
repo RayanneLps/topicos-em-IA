@@ -1,0 +1,31 @@
+teste 1 : (01\12\2025):
+    chunk_size=800,
+    chunk_overlap=200,
+    length_function=len,
+    add_start_index=True, #versao funcional 1
+    separators=["\n\n", "\n", ". ", " ", ""]
+
+    pergunta 1:17s e respondeu corretamente
+    pergunta 2:9s e respondeu corretamente
+    pergunta 3:7s e não encontrou a resposta
+    pergunta 4:11s e respondeu corretamente
+    pergunta 5:9s e não encontrou a resposta
+    pergunta 6:9s e não encontrou a resposta
+    pergunta 7:9s e respondeu corretamente
+    pergunta 8:10s e respondeu corretamente
+    pergunta 9:7s e respondeu corretamente
+    pergunta 10:9s e não encontrou a resposta
+    pergunta 11:7s e não encontrou a resposta
+    pergunta 12:6s e não encontrou a resposta
+    pergunta 13:9s e não encontrou a resposta
+    pergunta 14:9s e respondeu corretamente
+    pergunta 15:7s e não encontrou a resposta
+    pergunta 16:9s e respondeu corretamente
+    pergunta 17:8s e respondeu corretamente
+    pergunta 18:8s e não encontrou a resposta
+    pergunta 19:9s e não encontrou a resposta
+    pergunta 20:8s e não encontrou a resposta
+
+modelos:
+llama3:latest
+nomic-embed-text:latest
